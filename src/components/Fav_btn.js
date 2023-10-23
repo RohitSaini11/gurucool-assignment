@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import style from "../fav_btn.css";
 
 function Fav_btn(props) {
   const dataId = props.dataId;
