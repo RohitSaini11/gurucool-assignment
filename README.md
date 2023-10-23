@@ -3,6 +3,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## How to setup locally 
+
 1.Clone the repository in your local environment.
 2.Run `npm i` to install all the dependencies.
 3.Try running the app using `npm start`.
