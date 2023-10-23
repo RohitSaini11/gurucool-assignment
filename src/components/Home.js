@@ -7,6 +7,7 @@ import { api_id,api_key,type } from "./API_AUTH_KEYS";
 const Home = ()=>{
     const [searchStr,setSearchstr]= useState('');
     const [list,setList]= useState([]);
+    const [searched,setSearched] = useState(false);
 
     const base_url= "https://api.edamam.com/api/recipes/v2";
     const auth= `app_id=${api_id}&app_key=${api_key}&type=${type}`;
@@ -28,7 +29,7 @@ const Home = ()=>{
               const data= json.hits;
       
               console.log(data);
-      
+              setSearched(true);
               setList(data);
             }catch (error) {
               console.log(error,"Can't Find the recipes right now!!, try checking recipe Id or the auth_ids and Keys!!!");
@@ -39,9 +40,6 @@ const Home = ()=>{
 
     async function handleSubmit(e){
         e.preventDefault(); 
-        // const data = await useFetchdata({searchStr});
-        // setList(data);       
-        // console.log(searchStr);
     }
     const handleButtonClick = () => {
         setSearchstr(document.getElementById('searchInput').value);
@@ -73,13 +71,22 @@ const Home = ()=>{
 
             </div>
             
-            <div className='result_container mt-10 flex flex-wrap justify-center gap-4'>
-                {list && list.map((item)=>{
-                    const key= extractRecipeID(item.recipe.uri);
-                    // console.log(key);
-                    return <Card key={key} setasID={key} item={item.recipe} />
-                })}
-            </div>
+            {
+            list.length > 0 ?
+                <div className='result_container mt-10 flex flex-wrap justify-center gap-4'>
+                    {list && list.map((item)=>{
+                        const key= extractRecipeID(item.recipe.uri);
+                        // console.log(key);
+                        return <Card key={key} setasID={key} item={item.recipe} />
+                    })}
+                </div>
+                :
+                searched ?
+                    <div className="font-bold text-3xl text-center mt-10">
+                        No result Found
+                    </div>
+                    :<div></div>
+            }
         </div>
 
     );
