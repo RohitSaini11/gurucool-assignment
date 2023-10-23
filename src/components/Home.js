@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import Card from "./Card";
 // import Fetchdata from "./Fetch";
 import { api_id,api_key,type } from "./API_AUTH_KEYS";
-
+import { Audio } from 'react-loader-spinner';
 
 const Home = ()=>{
+    const [isloading,SetIsloading]=useState(false);
     const [searchStr,setSearchstr]= useState('');
     const [list,setList]= useState([]);
     const [searched,setSearched] = useState(false);
@@ -22,6 +23,7 @@ const Home = ()=>{
                   res = await fetch(`${base_url}?${type}&q=${searchStr}&${auth}`);
               }
               else{
+                SetIsloading(false);
                 return;
               }
               if (!res.ok) throw new Error("Oops! An error has occured");
@@ -31,6 +33,8 @@ const Home = ()=>{
               console.log(data);
               setSearched(true);
               setList(data);
+              SetIsloading(false);
+
             }catch (error) {
               console.log(error,"Can't Find the recipes right now!!, try checking recipe Id or the auth_ids and Keys!!!");
             }
@@ -44,6 +48,7 @@ const Home = ()=>{
     const handleButtonClick = () => {
         setSearchstr(document.getElementById('searchInput').value);
         console.log(searchStr);
+        SetIsloading(true);
     }
 
     // function getIds(){   
@@ -53,7 +58,14 @@ const Home = ()=>{
         const match = uri.match(regex);
         return match ? match[1] : null;
     }
-    
+    if(isloading){
+        return( 
+            <div className="px-[4vmin] py-[4vmin] flex flex-col justify-center items-center ">
+                <div className="">Loading....</div>
+                <Audio height="50" width="50" radius="9" color="black" ariaLabel="loading" wrapperStyle wrapperClass />
+            </div>
+        )
+    }
     return(
         <div className="main px-[4vmin] py-[4vmin]">    
         
